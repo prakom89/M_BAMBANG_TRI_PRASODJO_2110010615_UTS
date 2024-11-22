@@ -1,5 +1,12 @@
 
+import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -17,9 +24,17 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     private DefaultTableModel tableModel;
+    private Inventaris inventaris;
 
     public MainFrame() {
         initComponents();
+    }
+
+    private void clearForm() {
+        txtIdBarang.setText("");
+        txtNamaBarang.setText("");
+        txtJumlah.setText("");
+        txtHarga.setText("");
     }
 
     /**
@@ -155,8 +170,18 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel5.setText("APLIKASI INVENTARIS BARANG");
 
         btnExport.setText("Export");
+        btnExport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportActionPerformed(evt);
+            }
+        });
 
         btnImport.setText("Import");
+        btnImport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnImportActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -196,23 +221,106 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        // TODO add your handling code here:
+        // Ambil baris yang dipilih pada tabel
+        DefaultTableModel model = (DefaultTableModel) tableBarang.getModel();
+        int selectedRow = tableBarang.getSelectedRow();
+
+        // Cek apakah ada baris yang dipilih
+        if (selectedRow != -1) {
+            // Ambil data dari baris yang dipilih
+            String id = (String) model.getValueAt(selectedRow, 0); // Kolom ID Barang
+            String nama = (String) model.getValueAt(selectedRow, 1); // Kolom Nama Barang
+            int jumlah = (int) model.getValueAt(selectedRow, 2); // Kolom Jumlah
+            double harga = (double) model.getValueAt(selectedRow, 3); // Kolom Harga
+
+            // Set data ke form input
+            txtIdBarang.setText(id);
+            txtNamaBarang.setText(nama);
+            txtJumlah.setText(String.valueOf(jumlah));
+            txtHarga.setText(String.valueOf(harga));
+
+            // Ubah tombol Tambah menjadi Simpan
+            btnTambah.setText("SIMPAN");
+
+            // Hapus semua listener lama dari tombol Tambah
+            for (ActionListener al : btnTambah.getActionListeners()) {
+                btnTambah.removeActionListener(al);
+            }
+
+            // Tambahkan listener untuk menyimpan perubahan
+            btnTambah.addActionListener(e -> {
+                // Validasi input kosong
+                String newId = txtIdBarang.getText().trim();
+                String newNama = txtNamaBarang.getText().trim();
+                String jumlahStr = txtJumlah.getText().trim();
+                String hargaStr = txtHarga.getText().trim();
+
+                if (newId.isEmpty() || newNama.isEmpty() || jumlahStr.isEmpty() || hargaStr.isEmpty()) {
+                    JOptionPane.showMessageDialog(this, "Semua field harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Validasi format angka
+                try {
+                    int newJumlah = Integer.parseInt(jumlahStr);
+                    double newHarga = Double.parseDouble(hargaStr);
+
+                    // Simpan data ke tabel
+                    model.setValueAt(newId, selectedRow, 0); // Update ID Barang
+                    model.setValueAt(newNama, selectedRow, 1); // Update Nama Barang
+                    model.setValueAt(newJumlah, selectedRow, 2); // Update Jumlah
+                    model.setValueAt(newHarga, selectedRow, 3); // Update Harga
+
+                    // Kembalikan tombol Tambah ke fungsinya
+                    clearForm();
+                    btnTambah.setText("TAMBAH");
+
+                    JOptionPane.showMessageDialog(this, "Data berhasil diperbarui!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Jumlah dan Harga harus berupa angka!", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            });
+        } else {
+            JOptionPane.showMessageDialog(this, "Pilih baris yang ingin diedit!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
-        // TODO add your handling code here:
+        // Mengosongkan semua JTextField di form
+        txtIdBarang.setText("");
+        txtNamaBarang.setText("");
+        txtJumlah.setText("");
+        txtHarga.setText("");
     }//GEN-LAST:event_btnClearActionPerformed
 
     private void btnTambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTambahActionPerformed
         String id = txtIdBarang.getText().trim();
         String nama = txtNamaBarang.getText().trim();
-        int jumlah = Integer.parseInt(txtJumlah.getText().trim());
-        int harga = Integer.parseInt(txtHarga.getText().trim());
+        String jumlahStr = txtJumlah.getText().trim();
+        String hargaStr = txtHarga.getText().trim();
 
         // Validasi input kosong
-        if (id.isEmpty() || nama.isEmpty() || txtJumlah.getText().isEmpty() || txtHarga.getText().isEmpty()) {
+        if (id.isEmpty() || nama.isEmpty() || jumlahStr.isEmpty() || hargaStr.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Semua field harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+            return; // Menghentikan proses jika ada field yang kosong
+        }
+
+        // Validasi format angka untuk Jumlah
+        int jumlah = 0;
+        try {
+            jumlah = Integer.parseInt(jumlahStr); // Mengubah jumlah ke tipe int
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Jumlah harus berupa angka!", "Format Tidak Valid", JOptionPane.ERROR_MESSAGE);
+            return; // Hentikan proses jika format Jumlah salah
+        }
+
+        // Validasi format angka untuk Harga
+        double harga = 0.0;
+        try {
+            harga = Double.parseDouble(hargaStr); // Mengubah harga ke tipe double
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Harga harus berupa angka!", "Format Tidak Valid", JOptionPane.ERROR_MESSAGE);
+            return; // Hentikan proses jika format Harga salah
         }
 
         // Tambahkan data ke tabel
@@ -220,10 +328,7 @@ public class MainFrame extends javax.swing.JFrame {
         model.addRow(new Object[]{id, nama, jumlah, harga});
 
         // Kosongkan form setelah menambah data
-        txtIdBarang.setText("");
-        txtNamaBarang.setText("");
-        txtJumlah.setText("");
-        txtHarga.setText("");
+        clearForm();
 
         // Logika tambah barang
         JOptionPane.showMessageDialog(this, "Barang berhasil ditambahkan!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
@@ -231,24 +336,67 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_btnTambahActionPerformed
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
-        // Ambil baris yang dipilih dari tabel
+        DefaultTableModel model = (DefaultTableModel) tableBarang.getModel();
+
+        System.out.println("tableModel: " + model);
+        System.out.println("tableBarang: " + tableBarang);
+
+        // Cek apakah tableModel atau tableBarang null
+        if (model == null || tableBarang == null) {
+            JOptionPane.showMessageDialog(this, "Tabel belum terinisialisasi!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
         int selectedRow = tableBarang.getSelectedRow();
-
-        // Debugging: Tampilkan nilai selectedRow
-        System.out.println("Selected Row: " + selectedRow);
-
-        // Cek apakah ada baris yang dipilih
         if (selectedRow != -1) {
-            // Menghapus baris yang dipilih dari model tabel
-            tableModel.removeRow(selectedRow);
-
-            // Menampilkan pesan konfirmasi
+            model.removeRow(selectedRow);
             JOptionPane.showMessageDialog(this, "Data barang berhasil dihapus!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            // Jika tidak ada baris yang dipilih, tampilkan pesan error
             JOptionPane.showMessageDialog(this, "Pilih baris yang ingin dihapus!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnHapusActionPerformed
+
+    private void btnExportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportActionPerformed
+        String filePath = "data.csv"; // Nama file tempat data akan disimpan
+        saveToFile(filePath);
+    }//GEN-LAST:event_btnExportActionPerformed
+
+    private void btnImportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImportActionPerformed
+        String filePath = "data.csv"; // Nama file dari mana data akan dimuat
+        loadFromFile(filePath);
+    }//GEN-LAST:event_btnImportActionPerformed
+
+    private void saveToFile(String filePath) {
+        DefaultTableModel model = (DefaultTableModel) tableBarang.getModel();
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
+            // Iterasi baris dalam tabel
+            for (int i = 0; i < model.getRowCount(); i++) {
+                for (int j = 0; j < model.getColumnCount(); j++) {
+                    writer.print(model.getValueAt(i, j));
+                    if (j < model.getColumnCount() - 1) {
+                        writer.print(","); // Pisahkan dengan koma
+                    }
+                }
+                writer.println(); // Baris baru untuk setiap baris tabel
+            }
+            JOptionPane.showMessageDialog(this, "Data berhasil disimpan!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Gagal menyimpan data: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void loadFromFile(String filePath) {
+        DefaultTableModel model = (DefaultTableModel) tableBarang.getModel();
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] data = line.split(","); // Pisahkan dengan koma
+                model.addRow(data); // Tambahkan baris ke model tabel
+            }
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this, "Gagal membaca data: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     /**
      * @param args the command line arguments

@@ -9,34 +9,34 @@
  * @author ACER
  */
 public class Barang {
-    private String idBarang;
-    private String namaBarang;
+    private String id;
+    private String nama;
     private int jumlah;
     private double harga;
 
     // Constructor
-    public Barang(String idBarang, String namaBarang, int jumlah, double harga) {
-        this.idBarang = idBarang;
-        this.namaBarang = namaBarang;
+    public Barang(String id, String nama, int jumlah, double harga) {
+        this.id = id;
+        this.nama = nama;
         this.jumlah = jumlah;
         this.harga = harga;
     }
 
     // Getter dan Setter
-    public String getIdBarang() {
-        return idBarang;
+    public String getId() {
+        return id;
     }
 
-    public void setIdBarang(String idBarang) {
-        this.idBarang = idBarang;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getNamaBarang() {
-        return namaBarang;
+    public String getNama() {
+        return nama;
     }
 
-    public void setNamaBarang(String namaBarang) {
-        this.namaBarang = namaBarang;
+    public void setNama(String nama) {
+        this.nama = nama;
     }
 
     public int getJumlah() {
@@ -53,5 +53,10 @@ public class Barang {
 
     public void setHarga(double harga) {
         this.harga = harga;
+    }
+
+    @Override
+    public String toString() {
+        return id + " - " + nama + " - " + jumlah + " - " + harga;
     }
 }
