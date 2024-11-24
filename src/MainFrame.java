@@ -356,12 +356,13 @@ public class MainFrame extends javax.swing.JFrame {
         }
 
         int selectedRow = tableBarang.getSelectedRow();
-        // Konfirmasi penghapusan
+        if (selectedRow != -1) {
+            // Konfirmasi penghapusan
             int confirm = JOptionPane.showConfirmDialog(this, "Apakah Anda yakin ingin menghapus kontak ini?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
             if (confirm != JOptionPane.YES_OPTION) {
                 return;
             }
-        if (selectedRow != -1) {
+            
             inventaris.hapusBarang(selectedRow);
             model.removeRow(selectedRow);
             JOptionPane.showMessageDialog(this, "Data barang berhasil dihapus!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
