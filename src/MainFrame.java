@@ -24,10 +24,11 @@ public class MainFrame extends javax.swing.JFrame {
      * Creates new form MainFrame
      */
     private DefaultTableModel tableModel;
-    private Inventaris inventaris;
+    Inventaris inventaris = new Inventaris();
 
     public MainFrame() {
         initComponents();
+        loadData();
     }
 
     private void clearForm() {
@@ -59,6 +60,7 @@ public class MainFrame extends javax.swing.JFrame {
         btnEdit = new javax.swing.JButton();
         btnHapus = new javax.swing.JButton();
         btnClear = new javax.swing.JButton();
+        btnSimpan = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tableBarang = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
@@ -113,56 +115,68 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
 
+        btnSimpan.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        btnSimpan.setText("SIMPAN");
+        btnSimpan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSimpanActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(6, 6, 6)
+                .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel3)
                     .addComponent(jLabel4)
+                    .addComponent(jLabel3)
                     .addComponent(jLabel2)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(txtJumlah, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
+                        .addComponent(txtIdBarang, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
+                        .addComponent(txtNamaBarang, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
+                        .addComponent(txtHarga, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txtJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtIdBarang, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtHarga, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNamaBarang, javax.swing.GroupLayout.PREFERRED_SIZE, 508, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(38, Short.MAX_VALUE))
+                    .addComponent(btnTambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnHapus, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(29, 29, 29)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtIdBarang, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(txtNamaBarang, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(jLabel2)))
+                    .addComponent(btnTambah, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(txtNamaBarang, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(btnEdit, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtHarga, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel4))
-                .addContainerGap())
+                    .addComponent(txtJumlah, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(btnSimpan, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(txtHarga, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnHapus, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 15, Short.MAX_VALUE)
+                .addComponent(btnClear, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
         );
 
         jScrollPane1.setBackground(new java.awt.Color(200, 200, 200));
@@ -203,7 +217,7 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane1)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 777, Short.MAX_VALUE)
                             .addComponent(jLabel5)
                             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(0, 0, Short.MAX_VALUE))
@@ -237,70 +251,23 @@ public class MainFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-        // Ambil baris yang dipilih pada tabel
-        DefaultTableModel model = (DefaultTableModel) tableBarang.getModel();
-        int selectedRow = tableBarang.getSelectedRow();
+        int selectedRow = tableBarang.getSelectedRow(); // Ambil baris yang dipilih
 
-        // Cek apakah ada baris yang dipilih
+        // Validasi apakah ada baris yang dipilih
         if (selectedRow != -1) {
-            // Ambil data dari baris yang dipilih
-            String id = (String) model.getValueAt(selectedRow, 0); // Kolom ID Barang
-            String nama = (String) model.getValueAt(selectedRow, 1); // Kolom Nama Barang
-            int jumlah = (int) model.getValueAt(selectedRow, 2); // Kolom Jumlah
-            double harga = (double) model.getValueAt(selectedRow, 3); // Kolom Harga
+            // Ambil data dari tabel menggunakan DefaultTableModel
+            DefaultTableModel model = (DefaultTableModel) tableBarang.getModel();
+            String id = model.getValueAt(selectedRow, 0).toString();    // ID Barang
+            String nama = model.getValueAt(selectedRow, 1).toString();  // Nama Barang
+            String jumlah = model.getValueAt(selectedRow, 2).toString(); // Jumlah
+            String harga = model.getValueAt(selectedRow, 3).toString(); // Harga
 
-            // Set data ke form input
+            // Masukkan data ke dalam field input
             txtIdBarang.setText(id);
             txtNamaBarang.setText(nama);
-            txtJumlah.setText(String.valueOf(jumlah));
-            txtHarga.setText(String.valueOf(harga));
+            txtJumlah.setText(jumlah);
+            txtHarga.setText(harga);
 
-            // Ubah tombol Tambah menjadi Simpan
-            btnTambah.setText("SIMPAN");
-
-            // Hapus semua listener lama dari tombol Tambah
-            for (ActionListener al : btnTambah.getActionListeners()) {
-                btnTambah.removeActionListener(al);
-            }
-
-            // Tambahkan listener untuk menyimpan perubahan
-            btnTambah.addActionListener(e -> {
-                // Validasi input kosong
-                String newId = txtIdBarang.getText().trim();
-                String newNama = txtNamaBarang.getText().trim();
-                String jumlahStr = txtJumlah.getText().trim();
-                String hargaStr = txtHarga.getText().trim();
-
-                if (newId.isEmpty() || newNama.isEmpty() || jumlahStr.isEmpty() || hargaStr.isEmpty()) {
-                    JOptionPane.showMessageDialog(this, "Semua field harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
-                    return;
-                }
-
-                // Validasi format angka
-                try {
-                    int newJumlah = Integer.parseInt(jumlahStr);
-                    double newHarga = Double.parseDouble(hargaStr);
-                    
-                    // Hitung ulang total
-                    double newTotal = newJumlah * newHarga;  
-
-                    // Simpan data ke tabel
-                    model.setValueAt(newId, selectedRow, 0); // Update ID Barang
-                    model.setValueAt(newNama, selectedRow, 1); // Update Nama Barang
-                    model.setValueAt(newJumlah, selectedRow, 2); // Update Jumlah
-                    model.setValueAt(newHarga, selectedRow, 3); // Update Harga
-                    model.setValueAt(newTotal, selectedRow, 4); // Update Total
-                    
-
-                    // Kembalikan tombol Tambah ke fungsinya
-                    clearForm();
-                    btnTambah.setText("TAMBAH");
-
-                    JOptionPane.showMessageDialog(this, "Data berhasil diperbarui!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
-                } catch (NumberFormatException ex) {
-                    JOptionPane.showMessageDialog(this, "Jumlah dan Harga harus berupa angka!", "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            });
         } else {
             JOptionPane.showMessageDialog(this, "Pilih baris yang ingin diedit!", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -343,13 +310,14 @@ public class MainFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Harga harus berupa angka!", "Format Tidak Valid", JOptionPane.ERROR_MESSAGE);
             return; // Hentikan proses jika format Harga salah
         }
-        
-        // Hitung total
-        double total = jumlah * harga;
+
+        Barang barang = new Barang(id, nama, jumlah, harga);
+        inventaris.tambahBarang(barang);
 
         // Tambahkan data ke tabel
-        DefaultTableModel model = (DefaultTableModel) tableBarang.getModel();
-        model.addRow(new Object[]{id, nama, jumlah, harga, total});
+        loadData();
+//        DefaultTableModel model = (DefaultTableModel) tableBarang.getModel();
+//        model.addRow(new Object[]{barang.getId(), barang.getNama(), barang.getJumlah(), barang.getHarga(), barang.getTotal()});
 
         // Kosongkan form setelah menambah data
         clearForm();
@@ -358,6 +326,22 @@ public class MainFrame extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Barang berhasil ditambahkan!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
 
     }//GEN-LAST:event_btnTambahActionPerformed
+
+    private void loadData() {
+        // Mengambil daftar barang dari Inventaris dan menambahkannya ke tabel
+        DefaultTableModel model = (DefaultTableModel) tableBarang.getModel();
+        model.setRowCount(0); // Hapus semua baris di tabel
+
+        for (Barang barang : inventaris.getDaftarBarang()) {
+            model.addRow(new Object[]{
+                barang.getId(),
+                barang.getNama(),
+                barang.getJumlah(),
+                barang.getHarga(),
+                barang.getJumlah() * barang.getHarga() // Hitung Total
+            });
+        }
+    }
 
     private void btnHapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHapusActionPerformed
         DefaultTableModel model = (DefaultTableModel) tableBarang.getModel();
@@ -372,7 +356,13 @@ public class MainFrame extends javax.swing.JFrame {
         }
 
         int selectedRow = tableBarang.getSelectedRow();
+        // Konfirmasi penghapusan
+            int confirm = JOptionPane.showConfirmDialog(this, "Apakah Anda yakin ingin menghapus kontak ini?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
+            if (confirm != JOptionPane.YES_OPTION) {
+                return;
+            }
         if (selectedRow != -1) {
+            inventaris.hapusBarang(selectedRow);
             model.removeRow(selectedRow);
             JOptionPane.showMessageDialog(this, "Data barang berhasil dihapus!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
         } else {
@@ -390,33 +380,82 @@ public class MainFrame extends javax.swing.JFrame {
         loadFromFile(filePath);
     }//GEN-LAST:event_btnImportActionPerformed
 
+    private void btnSimpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimpanActionPerformed
+        int selectedRow = tableBarang.getSelectedRow(); // Ambil baris yang dipilih
+
+        if (selectedRow != -1) {
+            try {
+                String id = txtIdBarang.getText().trim();
+                String nama = txtNamaBarang.getText().trim();
+                int jumlah = Integer.parseInt(txtJumlah.getText().trim());
+                double harga = Double.parseDouble(txtHarga.getText().trim());
+
+                // Update data di tabel
+                DefaultTableModel model = (DefaultTableModel) tableBarang.getModel();
+                model.setValueAt(id, selectedRow, 0);
+                model.setValueAt(nama, selectedRow, 1);
+                model.setValueAt(jumlah, selectedRow, 2);
+                model.setValueAt(harga, selectedRow, 3);
+                model.setValueAt(jumlah * harga, selectedRow, 4);
+
+                // Update data di Inventaris
+                Barang barangBaru = new Barang(id, nama, jumlah, harga);
+                inventaris.editBarang(selectedRow, barangBaru);
+
+                clearForm(); // Kosongkan form input
+                JOptionPane.showMessageDialog(this, "Data berhasil disimpan!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Jumlah dan Harga harus berupa angka!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Pilih baris yang ingin disimpan!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnSimpanActionPerformed
+
     private void saveToFile(String filePath) {
         DefaultTableModel model = (DefaultTableModel) tableBarang.getModel();
         try (PrintWriter writer = new PrintWriter(new FileWriter(filePath))) {
-            // Iterasi baris dalam tabel
-            for (int i = 0; i < model.getRowCount(); i++) {
-                for (int j = 0; j < model.getColumnCount(); j++) {
-                    writer.print(model.getValueAt(i, j));
-                    if (j < model.getColumnCount() - 1) {
-                        writer.print(","); // Pisahkan dengan koma
-                    }
-                }
-                writer.println(); // Baris baru untuk setiap baris tabel
+            // Tulis header kolom (tanpa kolom Total)
+            writer.println("ID Barang,Nama Barang,Jumlah,Harga");
+
+            // Iterasi data dari Inventaris
+            for (Barang barang : inventaris.getDaftarBarang()) {
+                writer.println(barang.getId() + ","
+                        + barang.getNama() + ","
+                        + barang.getJumlah() + ","
+                        + barang.getHarga());
             }
-            JOptionPane.showMessageDialog(this, "Data berhasil disimpan!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
+
+            JOptionPane.showMessageDialog(this, "Data berhasil diekspor!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Gagal menyimpan data: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Gagal mengekspor data: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void loadFromFile(String filePath) {
-        DefaultTableModel model = (DefaultTableModel) tableBarang.getModel();
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
+            boolean isFirstLine = true; // Penanda untuk baris pertama (header)
             while ((line = reader.readLine()) != null) {
+                if (isFirstLine) {
+                    isFirstLine = false; // Lewati baris pertama
+                    continue;
+                }
                 String[] data = line.split(","); // Pisahkan dengan koma
-                model.addRow(data); // Tambahkan baris ke model tabel
+                if (data.length == 4) { // Pastikan jumlah kolom sesuai
+                    String id = data[0].trim();
+                    String nama = data[1].trim();
+                    int jumlah = Integer.parseInt(data[2].trim());
+                    double harga = Double.parseDouble(data[3].trim());
+
+                    // Buat objek Barang dan tambahkan ke Inventaris
+                    Barang barang = new Barang(id, nama, jumlah, harga);
+                    inventaris.tambahBarang(barang);
+                }
             }
+            // Muat data ke tabel setelah selesai import
+            loadData();
+            JOptionPane.showMessageDialog(this, "Data berhasil diimport!", "Sukses", JOptionPane.INFORMATION_MESSAGE);
         } catch (IOException ex) {
             JOptionPane.showMessageDialog(this, "Gagal membaca data: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -463,6 +502,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton btnExport;
     private javax.swing.JButton btnHapus;
     private javax.swing.JButton btnImport;
+    private javax.swing.JButton btnSimpan;
     private javax.swing.JButton btnTambah;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
