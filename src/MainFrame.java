@@ -1,12 +1,24 @@
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /*
@@ -25,7 +37,7 @@ public class MainFrame extends javax.swing.JFrame {
      */
     private DefaultTableModel tableModel;
     Inventaris inventaris = new Inventaris();
-
+    
     public MainFrame() {
         initComponents();
         loadData();
@@ -36,6 +48,16 @@ public class MainFrame extends javax.swing.JFrame {
         txtNamaBarang.setText("");
         txtJumlah.setText("");
         txtHarga.setText("");
+    }
+    
+    //validasi agar ID barang tidak dapat diduplikasi saat menambahkan data
+    private boolean isIdDuplicate(String id) {
+        for (Barang barang : inventaris.getDaftarBarang()) {
+            if (barang.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -68,7 +90,10 @@ public class MainFrame extends javax.swing.JFrame {
         btnImport = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setBackground(new java.awt.Color(0, 204, 102));
+        setForeground(new java.awt.Color(0, 153, 153));
 
+        jPanel1.setBackground(new java.awt.Color(0, 153, 153));
         jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -84,7 +109,9 @@ public class MainFrame extends javax.swing.JFrame {
         jLabel4.setText("Harga");
 
         btnTambah.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        btnTambah.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/plus.png"))); // NOI18N
         btnTambah.setText("TAMBAH");
+        btnTambah.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnTambah.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnTambahActionPerformed(evt);
@@ -92,7 +119,9 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         btnEdit.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/pen.png"))); // NOI18N
         btnEdit.setText("EDIT");
+        btnEdit.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditActionPerformed(evt);
@@ -100,7 +129,9 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         btnHapus.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        btnHapus.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/bin.png"))); // NOI18N
         btnHapus.setText("HAPUS");
+        btnHapus.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnHapus.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnHapusActionPerformed(evt);
@@ -108,6 +139,7 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         btnClear.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        btnClear.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/eraser.png"))); // NOI18N
         btnClear.setText("CLEAR");
         btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -116,7 +148,9 @@ public class MainFrame extends javax.swing.JFrame {
         });
 
         btnSimpan.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
+        btnSimpan.setIcon(new javax.swing.ImageIcon(getClass().getResource("/images/diskette.png"))); // NOI18N
         btnSimpan.setText("SIMPAN");
+        btnSimpan.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         btnSimpan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSimpanActionPerformed(evt);
@@ -137,17 +171,16 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnClear, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(txtJumlah, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
-                        .addComponent(txtIdBarang, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
-                        .addComponent(txtNamaBarang, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
-                        .addComponent(txtHarga, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)))
+                    .addComponent(txtJumlah, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
+                    .addComponent(txtIdBarang, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
+                    .addComponent(txtNamaBarang, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE)
+                    .addComponent(txtHarga, javax.swing.GroupLayout.DEFAULT_SIZE, 508, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnTambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnTambah, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
                     .addComponent(btnSimpan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnHapus, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnHapus, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEdit, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -179,8 +212,9 @@ public class MainFrame extends javax.swing.JFrame {
                 .addGap(19, 19, 19))
         );
 
-        jScrollPane1.setBackground(new java.awt.Color(200, 200, 200));
+        jScrollPane1.setBackground(new java.awt.Color(0, 204, 204));
 
+        tableBarang.setBackground(new java.awt.Color(0, 204, 153));
         tableBarang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -292,6 +326,11 @@ public class MainFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Semua field harus diisi!", "Error", JOptionPane.ERROR_MESSAGE);
             return; // Menghentikan proses jika ada field yang kosong
         }
+        
+        if (isIdDuplicate(id)) {
+            JOptionPane.showMessageDialog(this, "ID Barang sudah ada! Gunakan ID lain.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
         // Validasi format angka untuk Jumlah
         int jumlah = 0;
@@ -390,6 +429,13 @@ public class MainFrame extends javax.swing.JFrame {
                 String nama = txtNamaBarang.getText().trim();
                 int jumlah = Integer.parseInt(txtJumlah.getText().trim());
                 double harga = Double.parseDouble(txtHarga.getText().trim());
+                
+                String oldId = (String) tableBarang.getValueAt(selectedRow, 0);
+                
+                if (!id.equals(oldId) && isIdDuplicate(id)) {
+                    JOptionPane.showMessageDialog(this, "ID Barang sudah ada! Gunakan ID lain.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
 
                 // Update data di tabel
                 DefaultTableModel model = (DefaultTableModel) tableBarang.getModel();
